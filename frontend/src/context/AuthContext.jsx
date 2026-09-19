@@ -43,8 +43,23 @@ export function AuthProvider({ children }) {
     setUser(null);
   };
 
+  const demoLogin = async () => {
+    try {
+      await login("demo@gmail.com", "demo123");
+    } catch (err) {
+      // If demo account doesn't exist, create it
+      await register({
+        name: "Demo User",
+        email: "demo@gmail.com",
+        password: "demo123",
+        role: "manager",
+        department: "general"
+      });
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, logout }}>
+    <AuthContext.Provider value={{ user, loading, login, register, logout, demoLogin }}>
       {children}
     </AuthContext.Provider>
   );

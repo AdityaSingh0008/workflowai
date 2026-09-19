@@ -7,7 +7,7 @@ import Logo from "../components/Logo.jsx";
 import { useAuth } from "../context/AuthContext.jsx";
 
 export default function Login() {
-  const { login } = useAuth();
+  const { login, demoLogin } = useAuth();
   const navigate = useNavigate();
   const [form, setForm] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
@@ -21,6 +21,19 @@ export default function Login() {
       navigate("/dashboard");
     } catch (err) {
       toast.error(err.response?.data?.message || "Login failed");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDemoLogin = async () => {
+    setLoading(true);
+    try {
+      await demoLogin();
+      toast.success("Logged in with Demo Account!");
+      navigate("/dashboard");
+    } catch (err) {
+      toast.error("Demo login failed");
     } finally {
       setLoading(false);
     }
@@ -60,7 +73,7 @@ export default function Login() {
             <input
               type="email"
               required
-              placeholder="you@company.com"
+              placeholder="Gmail ID (e.g. you@gmail.com)"
               className="input-field pl-10"
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
@@ -81,6 +94,22 @@ export default function Login() {
           <button type="submit" disabled={loading} className="btn-primary w-full">
             {loading ? "Signing in…" : "Sign in"}
             {!loading && <ArrowRight size={16} />}
+          </button>
+          
+          <div className="relative my-4 flex items-center justify-center">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-slate-700/50"></div>
+            </div>
+            <div className="relative bg-base-950 px-4 text-xs uppercase text-slate-500">Or</div>
+          </div>
+
+          <button
+            type="button"
+            onClick={handleDemoLogin}
+            disabled={loading}
+            className="w-full rounded-xl border border-accent-violet/30 bg-accent-violet/10 px-4 py-3 text-sm font-semibold text-accent-violet transition-colors hover:bg-accent-violet/20"
+          >
+            {loading ? "Please wait…" : "Login with Demo Account"}
           </button>
         </form>
 

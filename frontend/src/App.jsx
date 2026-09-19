@@ -1,35 +1,35 @@
-import ChatWindow from "./components/ChatWindow";
-import ApprovalCard from "./components/ApprovalCard";
+import { Routes, Route, Navigate } from "react-router-dom";
+import AppLayout from "./layouts/AppLayout";
+import ProtectedRoute from "./components/ProtectedRoute";
+
+// Pages
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Dashboard from "./pages/Dashboard";
+import Workspace from "./pages/Workspace";
+import Requests from "./pages/Requests";
+import Approvals from "./pages/Approvals";
 
 export default function App() {
   return (
-    <div className="dashboard-layout">
-      {/* Sidebar */}
-      <aside className="sidebar">
-        <div className="brand">
-          <h1>WorkFlowAI</h1>
-          <p>Enterprise AI Operations</p>
-        </div>
-        
-        {/* Placeholder for future sidebar nav items */}
-        <div style={{ flex: 1 }}></div>
-        
-        <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
-          System Status: <span style={{ color: 'var(--success)' }}>Online</span>
-        </div>
-      </aside>
-
-      {/* Main Content Area */}
-      <main className="main-content">
-        <div className="content-grid">
-          <ChatWindow />
-          
-          <div className="approvals-panel">
-            <h2 className="approvals-header">Action Center</h2>
-            <ApprovalCard />
-          </div>
-        </div>
-      </main>
-    </div>
+    <Routes>
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+      
+      <Route
+        path="/"
+        element={
+          <ProtectedRoute>
+            <AppLayout />
+          </ProtectedRoute>
+        }
+      >
+        <Route index element={<Navigate to="/dashboard" replace />} />
+        <Route path="dashboard" element={<Dashboard />} />
+        <Route path="workspace" element={<Workspace />} />
+        <Route path="requests" element={<Requests />} />
+        <Route path="approvals" element={<Approvals />} />
+      </Route>
+    </Routes>
   );
 }
