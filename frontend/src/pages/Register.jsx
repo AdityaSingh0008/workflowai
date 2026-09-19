@@ -55,7 +55,7 @@ export default function Register() {
             <input
               required
               placeholder="Username"
-              className="input-field pl-10"
+              className="input-field !pl-10"
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
             />
@@ -66,7 +66,7 @@ export default function Register() {
               type="email"
               required
               placeholder="Gmail ID (e.g. you@gmail.com)"
-              className="input-field pl-10"
+              className="input-field !pl-10"
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
             />
@@ -78,7 +78,7 @@ export default function Register() {
               required
               minLength={6}
               placeholder="Password (min 6 characters)"
-              className="input-field pl-10"
+              className="input-field !pl-10"
               value={form.password}
               onChange={(e) => setForm({ ...form, password: e.target.value })}
             />
@@ -86,7 +86,7 @@ export default function Register() {
           <div className="relative">
             <Briefcase className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" size={17} />
             <select
-              className="input-field pl-10 appearance-none"
+              className="input-field !pl-10 appearance-none"
               value={form.role}
               onChange={(e) => setForm({ ...form, role: e.target.value })}
             >

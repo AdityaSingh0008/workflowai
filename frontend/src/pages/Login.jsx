@@ -71,10 +71,10 @@ export default function Login() {
           <div className="relative">
             <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" size={17} />
             <input
-              type="email"
+              type="text"
               required
-              placeholder="Gmail ID (e.g. you@gmail.com)"
-              className="input-field pl-10"
+              placeholder="Username or Gmail ID"
+              className="input-field !pl-10"
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
             />
@@ -85,7 +85,7 @@ export default function Login() {
               type="password"
               required
               placeholder="Password"
-              className="input-field pl-10"
+              className="input-field !pl-10"
               value={form.password}
               onChange={(e) => setForm({ ...form, password: e.target.value })}
             />
