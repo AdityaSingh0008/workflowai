@@ -53,15 +53,21 @@ export default function ChatWindow() {
       <div className="chat-thread">
         <AnimatePresence>
           {thread.map((turn, i) => (
-            <motion.div 
+              <motion.div 
               key={i} 
               initial={{ opacity: 0, y: 20, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ duration: 0.3 }}
-              className={`bubble ${turn.role}`}
+              transition={{ type: "spring", stiffness: 200, damping: 20, delay: i * 0.05 }}
+              className={`bubble ${turn.role} hover:shadow-lg transition-shadow duration-300`}
             >
               {turn.department && <div className="tag">{turn.department}</div>}
-              <div>{turn.text}</div>
+              <motion.div 
+                initial={{ opacity: 0 }} 
+                animate={{ opacity: 1 }} 
+                transition={{ duration: 0.5, delay: 0.2 + i * 0.05 }}
+              >
+                {turn.text}
+              </motion.div>
               {turn.proposedTool && (
                 <div className="tool-note">
                   Tool: <code>{turn.proposedTool}</code>{" "}

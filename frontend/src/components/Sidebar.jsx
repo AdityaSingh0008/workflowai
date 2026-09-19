@@ -41,7 +41,9 @@ export default function Sidebar() {
           >
             <NavLink to={to} className="relative block">
               {({ isActive }) => (
-                <div
+                <motion.div
+                  whileHover={{ x: 4, scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                   className={`relative flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium transition-colors ${
                     isActive ? "text-white" : "text-slate-400 hover:text-slate-200"
                   }`}
@@ -55,7 +57,7 @@ export default function Sidebar() {
                   )}
                   <Icon className="relative h-4.5 w-4.5 z-10" size={18} />
                   <span className="relative z-10">{label}</span>
-                </div>
+                </motion.div>
               )}
             </NavLink>
           </motion.div>

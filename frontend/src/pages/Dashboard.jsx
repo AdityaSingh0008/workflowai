@@ -68,9 +68,25 @@ export default function Dashboard() {
               ))}
             </div>
           ) : data?.recentActivity?.length ? (
-            <div className="space-y-2.5">
+            <motion.div 
+              variants={{
+                hidden: { opacity: 0 },
+                show: { opacity: 1, transition: { staggerChildren: 0.1 } }
+              }}
+              initial="hidden"
+              animate="show"
+              className="space-y-2.5"
+            >
               {data.recentActivity.map((item) => (
-                <div key={item._id} className="flex items-center justify-between rounded-xl border border-white/5 bg-white/[0.02] px-4 py-3">
+                <motion.div 
+                  variants={{
+                    hidden: { opacity: 0, x: -10 },
+                    show: { opacity: 1, x: 0 }
+                  }}
+                  whileHover={{ scale: 1.01 }}
+                  key={item._id} 
+                  className="flex items-center justify-between rounded-xl border border-white/5 bg-white/[0.02] px-4 py-3 hover:bg-white/[0.04] transition-colors cursor-pointer"
+                >
                   <div className="min-w-0 flex-1">
                     <p className="truncate text-sm text-slate-200">{item.message}</p>
                     <div className="mt-1.5 flex items-center gap-2">
@@ -78,9 +94,9 @@ export default function Dashboard() {
                       <StatusBadge status={item.status} />
                     </div>
                   </div>
-                </div>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
           ) : (
             <EmptyState icon={MessagesSquare} title="No activity yet" subtitle="Start a conversation in the AI Workspace to see it here." />
           )}
@@ -95,13 +111,15 @@ export default function Dashboard() {
           <h2 className="mb-4 text-base font-semibold text-white">Quick Actions</h2>
           <div className="space-y-2.5">
             {quickActions.map((qa) => (
-              <button
+              <motion.button
+                whileHover={{ scale: 1.02, x: 5 }}
+                whileTap={{ scale: 0.98 }}
                 key={qa.label}
                 onClick={() => navigate("/workspace", { state: { prefill: qa.message } })}
                 className="w-full rounded-xl border border-white/10 bg-white/[0.02] px-4 py-3 text-left text-sm text-slate-300 transition-colors hover:border-accent-violet/40 hover:bg-white/[0.05]"
               >
                 {qa.label}
-              </button>
+              </motion.button>
             ))}
           </div>
 
