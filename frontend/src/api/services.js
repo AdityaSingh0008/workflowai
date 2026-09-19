@@ -37,10 +37,12 @@ export const requestApi = {
     } catch (err) {
       console.warn("Backend unavailable. Mocking requests list.");
       await delay(500);
-      return [
-        { _id: "req1", title: "Leave Request", status: "pending", createdAt: new Date().toISOString() },
-        { _id: "req2", title: "Hardware Request", status: "approved", createdAt: new Date(Date.now() - 86400000).toISOString() }
-      ];
+      return {
+        requests: [
+          { _id: "req1", message: "Leave Request", agent: "HR", status: "pending", createdAt: new Date().toISOString() },
+          { _id: "req2", message: "Hardware Request", agent: "IT", status: "approved", createdAt: new Date(Date.now() - 86400000).toISOString() }
+        ]
+      };
     }
   },
 };
@@ -53,9 +55,11 @@ export const approvalApi = {
     } catch (err) {
       console.warn("Backend unavailable. Mocking approvals list.");
       await delay(500);
-      return [
-        { _id: "app1", title: "Server Access", request: { title: "Production DB Access" }, status: "pending" }
-      ];
+      return {
+        approvals: [
+          { _id: "app1", reason: "Sensitive action", agentRequest: { message: "Production DB Access" }, agent: "IT", status: "pending", createdAt: new Date().toISOString() }
+        ]
+      };
     }
   },
   decide: async (id, approve) => {
@@ -83,8 +87,8 @@ export const dashboardApi = {
         pendingApprovals: 3,
         activeRequests: 2,
         recentActivity: [
-          { _id: "act1", description: "Logged into system", timestamp: new Date().toISOString() },
-          { _id: "act2", description: "Submitted leave request", timestamp: new Date(Date.now() - 3600000).toISOString() }
+          { _id: "act1", message: "Logged into system", agent: "System", status: "success", timestamp: new Date().toISOString() },
+          { _id: "act2", message: "Submitted leave request", agent: "HR", status: "pending", timestamp: new Date(Date.now() - 3600000).toISOString() }
         ]
       };
     }
