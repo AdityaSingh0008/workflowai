@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { sendChat } from "../api/client";
+import { sendChat, getPendingApprovals } from "../api/client";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function ChatWindow() {
@@ -96,6 +96,31 @@ export default function ChatWindow() {
           onClick={handleSend}
         >
           Send
+        </motion.button>
+        <motion.button 
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={async () => {
+            try {
+              setLoading(true);
+              const data = await getPendingApprovals();
+              setThread((t) => [
+                ...t,
+                {
+                  role: "agent",
+                  text: `You have ${data.length} pending approvals.`,
+                  department: "SYSTEM"
+                }
+              ]);
+            } catch (err) {
+              setThread((t) => [...t, { role: "agent", text: `Error fetching approvals: ${err.message}` }]);
+            } finally {
+              setLoading(false);
+            }
+          }}
+          className="ml-2 bg-slate-700 hover:bg-slate-600 px-4 py-2 rounded text-sm font-medium text-white transition-colors shadow-glow"
+        >
+          Check Pending
         </motion.button>
       </div>
     </motion.div>

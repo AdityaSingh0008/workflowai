@@ -2,8 +2,10 @@ from pydantic_settings import BaseSettings
 from functools import lru_cache
 
 
+import os
 class Settings(BaseSettings):
-    database_url: str = "sqlite:///./workflowai.db"
+    _db_path = "/tmp/workflowai.db" if os.environ.get("VERCEL") else "./workflowai.db"
+    database_url: str = f"sqlite:///{_db_path}"
     llm_provider: str = "openai"
     openai_api_key: str = ""
     anthropic_api_key: str = ""
