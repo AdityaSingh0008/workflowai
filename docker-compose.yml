@@ -1,0 +1,17 @@
+version: "3.9"
+services:
+  db:
+    image: ankane/pgvector:latest
+    container_name: workflowai-db
+    environment:
+      POSTGRES_USER: workflowai
+      POSTGRES_PASSWORD: workflowai
+      POSTGRES_DB: workflowai
+    ports:
+      - "5432:5432"
+    volumes:
+      - workflowai_pgdata:/var/lib/postgresql/data
+      - ./db/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+
+volumes:
+  workflowai_pgdata:
