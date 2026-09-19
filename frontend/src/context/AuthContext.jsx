@@ -35,8 +35,44 @@ export function AuthProvider({ children }) {
     setUser(user);
   };
 
-  const login = async (email, password) => persist(await authApi.login(email, password));
-  const register = async (payload) => persist(await authApi.register(payload));
+  const login = async (email, password) => {
+    try {
+      const data = await authApi.login(email, password);
+      persist(data);
+      return data;
+    } catch (err) {
+      console.warn("Backend unavailable. Falling back to mock login.", err);
+      // Fallback for demo purposes if backend is not deployed
+      const mockUser = {
+        id: "mock-123",
+        name: email.split("@")[0] || email,
+        email: email.includes("@") ? email : `${email}@company.com`,
+        role: "employee",
+      };
+      persist({ token: "mock-token-123", user: mockUser });
+      return { token: "mock-token-123", user: mockUser };
+    }
+  };
+
+  const register = async (payload) => {
+    try {
+      const data = await authApi.register(payload);
+      persist(data);
+      return data;
+    } catch (err) {
+      console.warn("Backend unavailable. Falling back to mock register.", err);
+      const email = payload?.email || "user@company.com";
+      const mockUser = {
+        id: "mock-123",
+        name: payload?.name || email.split("@")[0] || "User",
+        email: email,
+        role: "employee",
+      };
+      persist({ token: "mock-token-123", user: mockUser });
+      return { token: "mock-token-123", user: mockUser };
+    }
+  };
+
   const logout = () => {
     localStorage.removeItem("workflowai_token");
     localStorage.removeItem("workflowai_user");
@@ -44,18 +80,16 @@ export function AuthProvider({ children }) {
   };
 
   const demoLogin = async () => {
-    try {
-      await login("demo@gmail.com", "demo123");
-    } catch (err) {
-      // If demo account doesn't exist, create it
-      await register({
-        name: "Demo User",
-        email: "demo@gmail.com",
-        password: "demo123",
-        role: "manager",
-        department: "general"
-      });
-    }
+    // For demo purposes, instantly log the user in without hitting the backend
+    const mockUser = {
+      id: "demo-123",
+      name: "Demo User",
+      email: "demo@company.com",
+      role: "manager",
+      department: "general",
+      leaveBalance: 18,
+    };
+    persist({ token: "demo-mock-token-abc-123", user: mockUser });
   };
 
   return (

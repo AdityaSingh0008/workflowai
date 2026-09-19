@@ -9,10 +9,13 @@ import Dashboard from "./pages/Dashboard";
 import Workspace from "./pages/Workspace";
 import Requests from "./pages/Requests";
 import Approvals from "./pages/Approvals";
+import { Toaster } from "react-hot-toast";
 
 export default function App() {
   return (
-    <Routes>
+    <>
+      <Toaster position="top-center" />
+      <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       
@@ -31,5 +34,6 @@ export default function App() {
         <Route path="approvals" element={<Approvals />} />
       </Route>
     </Routes>
+    </>
   );
 }
