@@ -46,3 +46,15 @@ def decide(approval_id: str, payload: ApprovalDecision, db: Session = Depends(ge
             result = fn(**approval.action_payload)
 
     return {"status": approval.status, "tool_result": result}
+
+@router.post("/seed")
+def seed(db: Session = Depends(get_db)):
+    from app.core.approvals import create_pending_approval
+    import uuid
+    approval = create_pending_approval(
+        db,
+        request_id=str(uuid.uuid4()),
+        action_type="approve_expense",
+        action_payload={"amount": 5000, "description": "New MacBook Pro for Engineering"}
+    )
+    return {"status": "success", "approval_id": approval.id}
