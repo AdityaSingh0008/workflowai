@@ -4,7 +4,7 @@ from functools import lru_cache
 
 import os
 class Settings(BaseSettings):
-    _db_path = "/tmp/workflowai.db" if os.environ.get("VERCEL") else "./workflowai.db"
+    _db_path = "/tmp/workflowai.db" if os.environ.get("VERCEL") or os.environ.get("VERCEL_ENV") or os.path.exists("/var/task") else "./workflowai.db"
     database_url: str = f"sqlite:///{_db_path}"
     llm_provider: str = "openai"
     openai_api_key: str = ""
